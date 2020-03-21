@@ -13,9 +13,11 @@ Quando desenvolvo testes, minha estratégia de desenvolvimento é sempre fazer o
 Se fosse no sprint scrum seguiria a priorização do product owner(GUT/RUT).
 
 ## WIP
-Padrões
 - DDD - Domain Drive Design 
+- Notação de namespaces
 - Testes unitários
+- DevOps
 
-Você pode verificar o DDD e testes unitários em poutro projeto que fiz
+
+Estou desenvolvendo no meu tempo livre, por enquanto, você pode verificar o DDD, testes unitários, DevOps em poutro projeto que fiz
 https://github.com/gcoppini/TournamentManager

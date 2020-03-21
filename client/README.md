@@ -1,3 +1,9 @@
+# Frontend - Web site - ReactApp
+
+## ATENÇÃO - Este frontend é só para testes - NÃO FAZ PARTE DOS REQUISITOS
+**Revisar Warnings de segurança**
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

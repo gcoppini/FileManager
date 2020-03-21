@@ -1,4 +1,3 @@
-
 # Teste Consultor Digital Atento
 
 TESTE PARA DESENVOLVEDOR .NET
@@ -6,9 +5,9 @@ TESTE PARA DESENVOLVEDOR .NET
 O TESTE ABAIXO VISA AVALIAR O PERFIL TÉCNICO DOS CANDIDATOS A DESENVOLVEDOR BACKEND.
 LEIA ATENTAMENTE AS INSTRUÇÕES ABAIXO E RESPONDA AS QUESTÕES DA MELHOR FORMA POSSÍVEL.
 
-• O TESTE SERÁ COMPOSTO DE TRÊS PERGUNTAS TÉCNICAS E UMA AVALIAÇÃO PRÁTICA.
-• RESPONDA AS PERGUNTAS COM SUAS PALAVRAS, COM SEU ENTENDIMENTO SOBRE O TEMA.
-• PUBLIQUE O TESTE PRÁTICO COM AS RESPOSTAS EM UM REPOSITÓRIO NO GIT-HUB E NOS ENVIE.
+* O TESTE SERÁ COMPOSTO DE TRÊS PERGUNTAS TÉCNICAS E UMA AVALIAÇÃO PRÁTICA.
+* RESPONDA AS PERGUNTAS COM SUAS PALAVRAS, COM SEU ENTENDIMENTO SOBRE O TEMA.
+* PUBLIQUE O TESTE PRÁTICO COM AS RESPOSTAS EM UM REPOSITÓRIO NO GIT-HUB E NOS ENVIE.
 
 ## PERGUNTAS
 
@@ -101,10 +100,14 @@ Para verificar se os contâniers estão sendo executados:
 - docker ps
 
 ## Links
-* Swagger			http://localhost:5000/swagger/index.html
-* API				http://localhost:5000/api/FileStorage/
-* Mongo Express		http://localhost:8081/
-* FrontEnd - 		http://localhost:8080/
+* Swagger
+   * http://localhost:5000/swagger/index.html
+* API
+   * http://localhost:5000/api/FileStorage/
+* Mongo ExpresS
+   * http://localhost:8081/
+* FrontEnd
+   * http://localhost:8080/
 
 
 ## Mongo GridFS

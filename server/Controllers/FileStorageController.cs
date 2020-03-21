@@ -122,9 +122,9 @@ namespace Atento.FileManager.Web.Api.Controllers
             }
         }
     
-        //GET api/download/12345abc
+        //GET api/download?filename=foo.bar
         [HttpGet("download")]
-        public async Task<IActionResult> Download(string filename) //case sensitive
+        public async Task<IActionResult> Download(string filename) //case SenSiTive
         {
             try
             {
