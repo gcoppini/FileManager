@@ -1,9 +1,9 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using MongoDB.Driver.GridFS;
+
 namespace Atento.FileManager.Web.Api.Models
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-     using MongoDB.Driver.GridFS;
-
     public interface IStoredFileRepository
     {
         GridFSBucket bucket { get; set;}

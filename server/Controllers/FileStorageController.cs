@@ -7,7 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver.GridFS;
 using Atento.FileManager.Web.Api.Models;
+using Atento.FileManager.Services;
 
+
+/*
+   CQS
+ - Quais métodos são comandos e quais são querys?
+*/
 namespace Atento.FileManager.Web.Api.Controllers
 {
     [ApiController]
@@ -16,10 +22,14 @@ namespace Atento.FileManager.Web.Api.Controllers
     public class FileStorageController: Controller
     {
         private readonly IStoredFileRepository _repo;
+        private readonly IFileStorageService _fileService;
 
-        public FileStorageController(IStoredFileRepository repo)
+
+        public FileStorageController(IStoredFileRepository repo,
+                                    IFileStorageService fileService)
         {
             _repo = repo;
+            _fileService = fileService;
         }
 
         // GET api/todos
@@ -79,37 +89,18 @@ namespace Atento.FileManager.Web.Api.Controllers
 
             return new OkResult();
         }
-
+        
         [HttpPost("upload"), DisableRequestSizeLimit]
-        public IActionResult Upload()
+        public async Task<IActionResult> Upload()
         {
             try
             {
                 var file = Request.Form.Files[0];
-        
-                if (file.Length > 0)
+                var result = await _fileService.Save(file);
+
+                if(result)
                 {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-
-                    using (var stream = new MemoryStream())
-                    {
-                        file.CopyTo(stream);
-
-                        var options = new GridFSUploadOptions
-                        {
-                            Metadata = new BsonDocument
-                            {
-                                {"author", "Gabriel Abner Copini"},
-                                {"contentType", file.ContentType},
-                                { "copyrighted", true }
-                            } 
-                        };  
-
-                        
-
-                        var id = _repo.bucket.UploadFromBytes(fileName, stream.ToArray(),options);
-                        return Ok(new { id });
-                    }
+                    return Ok(new { result });
                 }
                 else
                 {
@@ -121,7 +112,8 @@ namespace Atento.FileManager.Web.Api.Controllers
                 return StatusCode(500, $"Internal server error: {ex}");
             }
         }
-    
+        
+        
         //GET api/download?filename=foo.bar
         [HttpGet("download")]
         public async Task<IActionResult> Download(string filename) //case SenSiTive
@@ -130,7 +122,7 @@ namespace Atento.FileManager.Web.Api.Controllers
             {
                 if (string.IsNullOrEmpty(filename)) return BadRequest();
             
-                var fileBytes = await _repo.bucket.DownloadAsBytesByNameAsync(filename);
+                var fileBytes = await _fileService.Read(filename);
 
                 if(fileBytes.Length == 0) return NotFound();
 
@@ -148,8 +140,36 @@ namespace Atento.FileManager.Web.Api.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex}");
             }
+        } 
 
-  
-        }    
+
+        //GET api/download?filename=foo.bar
+        [HttpGet("copy")]
+        public async Task<IActionResult> Copy(string filename, string destinationPath) //case SenSiTive
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(filename)) return BadRequest();
+                if(string.IsNullOrEmpty(destinationPath)) return BadRequest();
+
+                var sucess = await _fileService.CopyTo(filename, destinationPath);
+
+                if(!sucess) return StatusCode(500, $"Internal server error: Error {sucess}");
+
+                return new OkResult();
+
+     
+            }
+            catch(MongoDB.Driver.GridFS.GridFSFileNotFoundException ex)
+            {
+                System.Diagnostics.Debugger.Log(1,"Info",ex.Message);
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }     
+    
     }
 }

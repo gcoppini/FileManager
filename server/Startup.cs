@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Atento.FileManager.Web.Api.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Atento.FileManager.Services;
 
 
 namespace Atento.FileManager.Web.Api
@@ -32,7 +33,12 @@ namespace Atento.FileManager.Web.Api
 
             var fileContext = new StoredFileContext(config.MongoDB);
             var fileRepo = new StoredFileRepository(fileContext);
+            var fileService = new FileStorageService(fileRepo);
+
+            
             services.AddSingleton<IStoredFileRepository>(fileRepo);
+            services.AddSingleton<IFileStorageService>(fileService);
+            
 
             services.AddControllers();
 
