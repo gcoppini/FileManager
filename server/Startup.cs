@@ -12,6 +12,11 @@ namespace Atento.FileManager.Web.Api
 {
     public class Startup
     {
+        private const string API_TITLE = "FileManager API";
+        private const string API_VERSION = "v1";
+        private string API_NAME = $"{API_TITLE} - {API_VERSION}";
+        private string API_SWAGGER_URL = $"/swagger/{API_VERSION}/swagger.json";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -34,11 +39,9 @@ namespace Atento.FileManager.Web.Api
             var fileContext = new StoredFileContext(config.MongoDB);
             var fileRepo = new StoredFileRepository(fileContext);
             var fileService = new FileStorageService(fileRepo);
-
             
             services.AddSingleton<IStoredFileRepository>(fileRepo);
             services.AddSingleton<IFileStorageService>(fileService);
-            
 
             services.AddControllers();
 
@@ -46,13 +49,11 @@ namespace Atento.FileManager.Web.Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc(API_VERSION, new OpenApiInfo { Title = API_TITLE, Version = API_VERSION });
             });
-
-            
-            
         }
 
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -82,7 +83,7 @@ namespace Atento.FileManager.Web.Api
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint(API_SWAGGER_URL, API_NAME);
             });
         }
     }

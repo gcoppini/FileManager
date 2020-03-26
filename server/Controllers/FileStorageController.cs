@@ -26,7 +26,7 @@ namespace Atento.FileManager.Web.Api.Controllers
 
 
         public FileStorageController(IStoredFileRepository repo,
-                                    IFileStorageService fileService)
+                                     IFileStorageService fileService)
         {
             _repo = repo;
             _fileService = fileService;
@@ -113,7 +113,6 @@ namespace Atento.FileManager.Web.Api.Controllers
             }
         }
         
-        
         //GET api/download?filename=foo.bar
         [HttpGet("download")]
         public async Task<IActionResult> Download(string filename) //case SenSiTive
@@ -143,7 +142,7 @@ namespace Atento.FileManager.Web.Api.Controllers
         } 
 
 
-        //GET api/download?filename=foo.bar
+        //GET api/copy?filename=foo.bar&destinationPath=pathOnServerOrNetwork
         [HttpGet("copy")]
         public async Task<IActionResult> Copy(string filename, string destinationPath) //case SenSiTive
         {
@@ -152,13 +151,11 @@ namespace Atento.FileManager.Web.Api.Controllers
                 if (string.IsNullOrEmpty(filename)) return BadRequest();
                 if(string.IsNullOrEmpty(destinationPath)) return BadRequest();
 
-                var sucess = await _fileService.CopyTo(filename, destinationPath);
+                var success = await _fileService.CopyTo(filename, destinationPath);
 
-                if(!sucess) return StatusCode(500, $"Internal server error: Error {sucess}");
+                if(!success) return StatusCode(500, $"Internal server error: Error {success}");
 
                 return new OkResult();
-
-     
             }
             catch(MongoDB.Driver.GridFS.GridFSFileNotFoundException ex)
             {
@@ -171,5 +168,18 @@ namespace Atento.FileManager.Web.Api.Controllers
             }
         }     
     
+        [HttpGet("remove")]
+        public async Task<IActionResult> Remove(string filename)
+        {
+            if (string.IsNullOrEmpty(filename)) return BadRequest();
+
+            var result = await _fileService.Remove(filename);
+
+            if (!result)
+                return new NotFoundResult();
+
+            return new OkResult();
+        }
+
     }
 }

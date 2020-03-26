@@ -35,7 +35,7 @@ class App extends Component {
             <h2>Stored Files</h2>
             <ul>
               { 
-                this.state.files.map(file => <li><a href={"http://localhost:5000/api/FileStorage/download?filename="+file.filename}>{file.filename}</a></li>)
+                this.state.files.map(file => <li><a href={"http://localhost:5000/api/FileStorage/download?filename="+file.filename}>{file.filename}</a>&nbsp;-&nbsp;<a href={"http://localhost:5000/api/FileStorage/remove?filename="+file.filename}>[Delete]</a></li>)
               }
             </ul>
           </div>

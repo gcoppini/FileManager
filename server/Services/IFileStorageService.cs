@@ -11,5 +11,6 @@ namespace Atento.FileManager.Services
         Task<bool> Save(IFormFile file);
         Task<bool> CopyTo(string fileName, string destinationPath);
         Task<byte[]> Read(string fileName);
+        Task<bool> Remove(string fileName);
     }
 }
