@@ -15,6 +15,9 @@ class App extends Component {
       }
   }
 
+  
+
+
   componentDidMount() {
     this.loadFiles();
   }
@@ -26,16 +29,16 @@ class App extends Component {
         <h2>File Transfer App</h2>
           <div>
             <p>Send Files</p>
-            <input type="file" name="file" onChange={this.onChangeHandler}/>
+            <input type="file" name="file" className="form-control"  onChange={this.onChangeHandler}/>
             <div className="form-group">
               <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</Progress>
             </div>
             <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button> 
-            <hr/>
+            
             <h2>Stored Files</h2>
-            <ul>
+            <ul className="list-group">
               { 
-                this.state.files.map(file => <li><a href={"http://localhost:5000/api/FileStorage/download?filename="+file.filename}>{file.filename}</a>&nbsp;-&nbsp;<a href={"http://localhost:5000/api/FileStorage/remove?filename="+file.filename}>[Delete]</a></li>)
+                this.state.files.map(file => <li className="list-group-item d-flex justify-content-between align-items-center" key={file.id}><span className="badge badge-success" onClick={() => this.onDownloadHandler(file.filename)}>{file.filename}</span>&nbsp;-<span className="badge badge-warning badge-pill">{file.metadata.contentType}</span>-&nbsp;<span className="badge badge-primary badge-pill" onClick={() => this.onDeleteHandler(file.filename)}>Delete</span></li>)
               }
             </ul>
           </div>
@@ -57,6 +60,28 @@ class App extends Component {
       </div>
     );
   }
+
+  onDeleteHandler = (fileName) => {
+    console.log("Delete callded - "+ fileName);
+    
+    axios.get("http://localhost:5000/api/FileStorage/remove?filename="+fileName).then(res => {
+        console.log(res.statusText)
+        this.loadFiles();
+      })
+  }
+
+  onDownloadHandler = (fileName) =>{
+    console.log("Download callded - "+fileName);
+
+    var url = "http://localhost:5000/api/FileStorage/download?filename="+fileName;
+    window.location.assign(url);
+    
+    //axios.get("http://localhost:5000/api/FileStorage/download?filename="+fileName).then(res => {
+     //   console.log(res.statusText)
+        //this.loadFiles();
+     // })
+  }
+
 
   onChangeHandler=event=>{
 
@@ -91,6 +116,10 @@ class App extends Component {
         this.setState({ files });
       })
   }
+
+  
+
+  
 
 }
 
